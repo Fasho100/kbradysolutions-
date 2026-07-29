@@ -239,3 +239,27 @@ body.loaded .lm .wi{transform:none}
 .svc-block>p{color:var(--ink);font-size:1.08rem;max-width:62ch;font-weight:300}
 .deliv{margin-top:2.2rem;display:grid;grid-template-columns:1fr 1fr;gap:.9rem 2.5rem}
 .deliv li{list-style:none;font-family:var(--font-m);font-size:.76rem;letter-spacing:.05em;color:var(--muted);display:flex;gap:.9rem;
+.deliv li::before{content:'✦';color:var(--gold);font-size:.6rem}
+.svc-tags{display:flex;gap:.7rem;margin-top:1.8rem;flex-wrap:wrap}
+.svc-tags span{font-family:var(--font-m);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);padding:.4rem .9rem}
+
+/* process timeline */
+.process{border-top:1px solid var(--line);margin-top:2rem}
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2.2rem;margin-top:3rem;position:relative}
+.proc-grid::before{content:'';position:absolute;top:9px;left:0;right:0;height:1px;background:var(--line)}
+.proc-step{position:relative;padding-top:2.2rem}
+.proc-step::before{content:'';position:absolute;top:4px;left:0;width:11px;height:11px;background:var(--bg);border:2px solid var(--gold);transform:rotate(45deg)}
+.proc-step .pn{font-family:var(--font-m);font-size:.62rem;letter-spacing:.26em;color:var(--gold);text-transform:uppercase}
+.proc-step h4{font-family:var(--font-d);font-weight:600;font-size:1.3rem;color:var(--ink);margin:.7rem 0 .5rem}
+.proc-step p{color:var(--muted);font-size:.9rem}
+.proc-step .wk{display:inline-block;margin-top:1rem;font-family:var(--font-m);font-size:.62rem;letter-spacing:.16em;color:var(--muted);border:1px solid var(--line-soft);padding:.32rem .7rem}
+/* FAQ */
+.faq{border-top:1px solid var(--line);margin-top:4rem}
+.faq-item{border-bottom:1px solid var(--line-soft)}
+.faq-q{width:100%;background:none;border:0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:2rem;padding:1.7rem .3rem;text-align:left;color:var(--ink);font-family:var(--font-d);font-weight:600;font-size:1.3rem;transition:color .3s}
+.faq-q:hover{color:var(--gold2)}
+.faq-q .pm{font-family:var(--font-m);color:var(--gold);font-size:1.2rem;transition:transform .4s var(--ease);flex-shrink:0}
+.faq-item.open .pm{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
+.faq-a p{color:var(--muted);padding:0 .3rem 1.7rem;max-width:64ch}
+          
