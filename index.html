@@ -253,3 +253,51 @@
 
   </main>
 
+  <div id="loginModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" onclick="closeModal('loginModal')">&times;</button>
+      <h2 id="loginTitle">School Login</h2>
+      <form id="loginForm" class="modal-form">
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="admin@school.edu" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+        <p class="form-footer">No account? <a href="#contact">Request a demo</a></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="contactModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close" onclick="closeModal('contactModal')">&times;</button>
+      <h2 id="contactTitle">Request a Demo</h2>
+      <form id="contactForm" class="modal-form">
+        <div class="form-group">
+          <label for="contactName">Full Name</label>
+          <input type="text" id="contactName" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-group">
+          <label for="contactEmail">School Email</label>
+          <input type="email" id="contactEmail" placeholder="admin@school.edu" required>
+        </div>
+        <div class="form-group">
+          <label for="contactSchool">School / District</label>
+          <input type="text" id="contactSchool" placeholder="Houston ISD" required>
+        </div>
+        <div class="form-group">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" rows="4" placeholder="Tell us about your needs..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Send Request</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
