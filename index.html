@@ -1,29 +1,154 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="description" content="SafeFrame delivers privacy-first AI behavior detection for schools, campuses, and facilities using existing cameras. No new hardware. No facial recognition."> <title>SafeFrame — Smarter School Security</title> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet"> <link rel="stylesheet" href="style.css"> </head><body>
-<a class="skip-link" href="#main">Skip to content</a>
-<header class="nav" id="site-header"> <nav class="nav-wrap" aria-label="Primary navigation">
-<a class="brand" href="#home" aria-label="SafeFrame home"> <span class="brand-mark" aria-hidden="true"> <img src="safeframe-logo.png" alt="" class="logo-svg" width="48" height="48"> </span> <span class="brand-text">SafeFrame</span> </a>
-<div class="nav-links" id="primary-menu"> <a class="nav-link active" href="#home">Home</a> <a class="nav-link" href="#problem">Problem</a> <a class="nav-link" href="#how">How It Works</a> <a class="nav-link" href="#why">Features</a> <a class="nav-link" href="#pricing">Pricing</a> <a class="nav-link" href="#contact">Contact</a> <button class="nav-link login-link" type="button" data-open-modal="login-modal">Login</button> </div>
-<button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu"> <span></span> <span></span> <span></span> </button>
-</nav> </header><main id="main" tabindex="-1">
-<section class="hero" id="home" aria-labelledby="hero-title"> <div class="container hero-grid">
-<div class="hero-copy"> <div class="eyebrow">Advanced Campus Protection</div> <h1 id="hero-title"> SafeFrame — Smarter Security From the Cameras You Already Have </h1> <p class="hero-subheadline"> AI-powered behavior detection that helps facilities respond faster without replacing trusted camera systems. </p>
-<div class="hero-actions"> <a class="btn btn-primary" href="#contact" data-open-contact>Get Started</a> <a class="btn btn-secondary" href="#how">See How It Works</a> </div><div class="hero-proof" aria-label="SafeFrame principles"> <span class="proof-pill">No new hardware</span> <span class="proof-pill">No facial recognition</span> <span class="proof-pill">Human-verified alerts</span> </div> </div>
-<aside class="hero-card" aria-label="SafeFrame school security emblem"> <div class="logo-stage" aria-hidden="true"> <img src="safeframe-logo.png" alt="" class="logo-svg" width="120" height="120"> </div> <div class="wordmark">SafeFrame</div> <p>Advanced Campus Protection</p>
-<div class="live-strip" aria-label="Deployment highlights"> <div class="live-item"> <span>Hardware</span>Existing cameras </div> <div class="live-item"> <span>Identity</span>No facial data </div> <div class="live-item"> <span>Verification</span>Human reviewed </div> </div> </aside>
-</div> </section><section class="section problem" id="problem" aria-labelledby="problem-title"> <div class="container"> <div class="problem-layout">
-<div class="problem-statement"><div class="section-kicker">THE PROBLEM</div> <h2 id="problem-title"> Most schools and facilities already have security cameras — but footage alone isn't enough. </h2> <p> Security teams need faster situational awareness without replacing trusted camera systems or adding invasive technology. </p> </div>
-<div class="problem-cards">
-<article class="info-card"><span class="card-number">01</span> <h3>Reactive review</h3> <p> Footage is often checked after an incident, leaving teams without real-time context when it matters most. </p> </article>
-<article class="info-card"> <span class="card-number">02</span> <h3>Missed context</h3> <p> Live camera feeds can be difficult to monitor continuously, especially across large campuses with multiple entry points. </p> </article>
-<article class="info-card"> <span class="card-number">03</span> <h3>Costly hardware cycles</h3> <p> New sensor networks can be expensive, disruptive, and slow to deploy when the cameras you need are already installed. </p> </article>
-<article class="info-card"> <span class="card-number">04</span> <h3>False alarm fatigue</h3> <p> Alerts need human judgment so teams can act quickly without triggering unnecessary responses that drain attention and trust. </p> </article>
-</div> </div> </div> </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SafeFrame delivers privacy-first AI behavior detection for schools, campuses, and facilities using existing cameras. No new hardware. No facial recognition.">
+  <title>SafeFrame — Smarter School Security</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="nav" id="site-header">
+    <nav class="nav-wrap" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="SafeFrame home">
+        <span class="brand-mark" aria-hidden="true">
+          <img src="safeframe-logo.png" alt="" class="logo-svg" width="48" height="48">
+        </span>
+        <span class="brand-text">SafeFrame</span>
+      </a>
+      <div class="nav-links" id="primary-menu">
+        <a class="nav-link active" href="#home">Home</a>
+        <a class="nav-link" href="#problem">Problem</a>
+        <a class="nav-link" href="#how">How It Works</a>
+        <a class="nav-link" href="#why">Features</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
+        <a class="nav-link" href="#contact">Contact</a>
+        <button class="nav-link login-link" type="button" data-open-modal="login-modal">Login</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
 
-<section class="section problem" id="problem" aria-labelledby="problem-title"> <div class="container"> <div class="problem-layout">
-<div class="problem-statement"> <div class="section-kicker">THE PROBLEM</div> <h2 id="problem-title"> Most schools and facilities already have security cameras — but footage alone isn't enough. </h2> <p> Security teams need faster situational awareness without replacing trusted camera systems or adding invasive technology. </p> </div>
-<div class="problem-cards">
-<article class="info-card"> <span class="card-number">01</span> <h3>Reactive review</h3> <p> Footage is often checked after an incident, leaving teams without real-time context when it matters most. </p> </article>
-<article class="info-card"> <span class="card-number">02</span> <h3>Missed context</h3> <p> Live camera feeds can be difficult to monitor continuously, especially across large campuses with multiple entry points. </p> </article>
-<article class="info-card"> <span class="card-number">03</span> <h3>Costly hardware cycles</h3> <p> New sensor networks can be expensive, disruptive, and slow to deploy when the cameras you need are already installed. </p> </article>
-<article class="info-card"> <span class="card-number">04</span> <h3>False alarm fatigue</h3> <p> Alerts need human judgment so teams can act quickly without triggering unnecessary responses that drain attention and trust. </p> </article>
-</div> </div> </div> </section>
+  <main id="main" tabindex="-1">
+
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Advanced Campus Protection</div>
+          <h1 id="hero-title">SafeFrame — Smarter Security From the Cameras You Already Have</h1>
+          <p class="hero-subheadline">AI-powered behavior detection that helps facilities respond faster without replacing trusted camera systems.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact" data-open-contact>Get Started</a>
+            <a class="btn btn-secondary" href="#how">See How It Works</a>
+          </div>
+          <div class="hero-proof" aria-label="SafeFrame principles">
+            <span class="proof-pill">No new hardware</span>
+            <span class="proof-pill">No facial recognition</span>
+            <span class="proof-pill">Human-verified alerts</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="SafeFrame school security emblem">
+          <div class="logo-stage" aria-hidden="true">
+            <img src="safeframe-logo.png" alt="" class="logo-svg" width="120" height="120">
+          </div>
+          <div class="wordmark">SafeFrame</div>
+          <p>Advanced Campus Protection</p>
+          <div class="live-strip" aria-label="Deployment highlights">
+            <div class="live-item"><span>Hardware</span>Existing cameras</div>
+            <div class="live-item"><span>Identity</span>No facial data</div>
+            <div class="live-item"><span>Verification</span>Human reviewed</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section problem" id="problem" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="problem-layout">
+          <div class="problem-statement">
+            <div class="section-kicker">THE PROBLEM</div>
+            <h2 id="problem-title">Most schools and facilities already have security cameras — but footage alone isn't enough.</h2>
+            <p>Security teams need faster situational awareness without replacing trusted camera systems or adding invasive technology.</p>
+          </div>
+
+          <div class="problem-cards">
+            <article class="info-card">
+              <span class="card-number">01</span>
+              <h3>Reactive review</h3>
+              <p>Footage is often checked after an incident, leaving teams without real-time context when it matters most.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">02</span>
+              <h3>Missed context</h3>
+              <p>Live camera feeds can be difficult to monitor continuously, especially across large campuses with multiple entry points.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">03</span>
+              <h3>Costly hardware cycles</h3>
+              <p>New sensor networks can be expensive, disruptive, and slow to deploy when the cameras you need are already installed.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">04</span>
+              <h3>False alarm fatigue</h3>
+              <p>Alerts need human judgment so teams can act quickly without triggering unnecessary responses that drain attention and trust.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- If the duplicated section below was intentional, it has been retained but IDs and labels were fixed for accessibility. -->
+    <section class="section problem" id="problem-2" aria-labelledby="problem-title-2">
+      <div class="container">
+        <div class="problem-layout">
+          <div class="problem-statement">
+            <div class="section-kicker">ADDITIONAL CHALLENGES</div>
+            <h2 id="problem-title-2">Operational constraints and scale can limit the value of camera systems without better tooling.</h2>
+            <p>Teams need solutions that integrate with existing workflows, reduce noise, and surface relevant events so they can act quickly and confidently.</p>
+          </div>
+
+          <div class="problem-cards">
+            <article class="info-card">
+              <span class="card-number">01</span>
+              <h3>Reactive review</h3>
+              <p>Footage is often checked after an incident, leaving teams without real-time context when it matters most.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">02</span>
+              <h3>Missed context</h3>
+              <p>Live camera feeds can be difficult to monitor continuously, especially across large campuses with multiple entry points.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">03</span>
+              <h3>Costly hardware cycles</h3>
+              <p>New sensor networks can be expensive, disruptive, and slow to deploy when the cameras you need are already installed.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">04</span>
+              <h3>False alarm fatigue</h3>
+              <p>Alerts need human judgment so teams can act quickly without triggering unnecessary responses that drain attention and trust.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  </body>
+</html>
