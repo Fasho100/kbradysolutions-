@@ -1,1 +1,2166 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SafeFrame delivers privacy-first AI behavior detection for schools, campuses, and facilities using the cameras you already have." />
+  <meta name="theme-color" content="#080909" />
+  <title>SafeFrame — Smarter School Security</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f4d03f;
+      --gold-deep: #a88014;
+      --black: #080909;
+      --black-soft: #101111;
+      --charcoal: #171818;
+      --charcoal-light: #222424;
+      --line: rgba(212, 175, 55, 0.22);
+      --line-strong: rgba(212, 175, 55, 0.48);
+      --text: #faf9f5;
+      --muted: #bdbcb6;
+      --muted-dark: #85847d;
+      --cream: #f5f0e1;
+      --success: #61c48a;
+      --danger: #ff7474;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+      --nav-h: 78px;
+      --radius: 24px;
+      --radius-sm: 16px;
+      --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-h) + 28px);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(212, 175, 55, 0.16), transparent 30rem),
+        radial-gradient(circle at 88% 18%, rgba(244, 208, 63, 0.08), transparent 28rem),
+        linear-gradient(180deg, #050505 0%, #0b0c0c 48%, #050505 100%);
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background-image:
+        linear-gradient(rgba(212, 175, 55, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.055) 1px, transparent 1px),
+        radial-gradient(circle, rgba(244, 208, 63, 0.34) 1px, transparent 1.6px);
+      background-size: 76px 76px, 76px 76px, 36px 36px;
+      opacity: 0.38;
+      animation: particleDrift 28s linear infinite;
+    }
+
+    body::after {
+      background:
+        radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.22) 58%, rgba(0, 0, 0, 0.76) 100%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.55), transparent 35%, rgba(0, 0, 0, 0.5));
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    ::selection {
+      color: #150f00;
+      background: var(--gold-light);
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid rgba(244, 208, 63, 0.42);
+      outline-offset: 3px;
+    }
+
+    main:focus {
+      outline: none;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 200;
+      transform: translateY(-160%);
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--gold-light);
+      color: #150f00;
+      font-weight: 800;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s var(--ease);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      height: var(--nav-h);
+      border-bottom: 1px solid transparent;
+      transition:
+        background 0.28s var(--ease),
+        border-color 0.28s var(--ease),
+        box-shadow 0.28s var(--ease),
+        backdrop-filter 0.28s var(--ease);
+    }
+
+    .nav.scrolled {
+      background: rgba(8, 9, 9, 0.9);
+      border-color: var(--line);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-wrap {
+      width: min(1240px, calc(100% - 48px));
+      height: 100%;
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: max-content;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 50px;
+      filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.34));
+    }
+
+    .brand-text {
+      color: var(--gold);
+      font-family: "Cinzel", serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 24px rgba(212, 175, 55, 0.2);
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 9px 13px;
+      border: 0;
+      border-radius: 999px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 0.94rem;
+      font-weight: 700;
+      line-height: 1;
+      transition:
+        color 0.2s var(--ease),
+        background 0.2s var(--ease),
+        box-shadow 0.2s var(--ease),
+        transform 0.2s var(--ease);
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: var(--text);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .nav-link.active {
+      color: var(--cream);
+      background: rgba(212, 175, 55, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.22);
+    }
+
+    .nav-link.login-link {
+      margin-left: 8px;
+      color: #150f00;
+      border: 1px solid rgba(244, 208, 63, 0.46);
+      background: linear-gradient(180deg, #f7dc68 0%, var(--gold) 48%, var(--gold-deep) 100%);
+      box-shadow:
+        0 12px 30px rgba(212, 175, 55, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+
+    .nav-link.login-link:hover,
+    .nav-link.login-link:focus-visible {
+      color: #150f00;
+      transform: translateY(-1px);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      gap: 4px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .menu-toggle span {
+      width: 20px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--gold-light);
+      transition:
+        transform 0.2s var(--ease),
+        opacity 0.2s var(--ease);
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .hero,
+    .section {
+      position: relative;
+    }
+
+    .hero {
+      isolation: isolate;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding: calc(var(--nav-h) + 78px) 0 92px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(90deg, rgba(8, 9, 9, 0.97) 0%, rgba(8, 9, 9, 0.74) 48%, rgba(8, 9, 9, 0.94) 100%),
+        radial-gradient(circle at 72% 42%, rgba(212, 175, 55, 0.2), transparent 29rem),
+        radial-gradient(circle at 18% 22%, rgba(244, 208, 63, 0.1), transparent 24rem);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 175, 55, 0.08) 1px, transparent 1px),
+        radial-gradient(circle, rgba(244, 208, 63, 0.62) 1px, transparent 1.8px);
+      background-size: 68px 68px, 68px 68px, 34px 34px;
+      opacity: 0.34;
+      mask-image: radial-gradient(circle at 68% 46%, black 0%, transparent 72%);
+      animation: heroSparkle 20s linear infinite;
+    }
+
+    .hero-bg-art {
+      position: absolute;
+      top: 50%;
+      right: clamp(-180px, -8vw, -20px);
+      z-index: -1;
+      width: min(92vw, 920px);
+      transform: translateY(-48%) scale(1.04);
+      opacity: 0.18;
+      filter:
+        drop-shadow(0 0 54px rgba(212, 175, 55, 0.36))
+        saturate(1.15);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.72fr);
+      align-items: center;
+      gap: clamp(34px, 6vw, 72px);
+    }
+
+    .hero-copy {
+      max-width: 780px;
+    }
+
+    .eyebrow,
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--gold);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before,
+    .section-kicker::before {
+      content: "";
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.5);
+    }
+
+    .hero h1,
+    .section h2 {
+      font-family: "Cinzel", serif;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+
+    .hero h1 {
+      margin-top: 18px;
+      font-size: clamp(2.55rem, 6vw, 5.75rem);
+      font-weight: 800;
+      color: var(--text);
+      text-shadow: 0 0 34px rgba(212, 175, 55, 0.1);
+    }
+
+    .hero-subheadline {
+      max-width: 720px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: clamp(1.06rem, 1.7vw, 1.34rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 13px 20px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-weight: 800;
+      line-height: 1;
+      transition:
+        transform 0.2s var(--ease),
+        box-shadow 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        background 0.2s var(--ease);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #150f00;
+      background: linear-gradient(180deg, #f7dc68 0%, var(--gold) 48%, var(--gold-deep) 100%);
+      border-color: rgba(244, 208, 63, 0.48);
+      box-shadow:
+        0 18px 42px rgba(212, 175, 55, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-primary:hover {
+      box-shadow:
+        0 22px 52px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.66);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.045);
+      border-color: var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--line-strong);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .hero-proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .proof-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 999px;
+      color: var(--cream);
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .proof-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 14px rgba(97, 196, 138, 0.72);
+    }
+
+    .hero-card {
+      position: relative;
+      justify-self: center;
+      width: min(100%, 430px);
+      padding: 30px;
+      border: 1px solid rgba(212, 175, 55, 0.24);
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.18), transparent 45%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025));
+      box-shadow:
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background:
+        linear-gradient(135deg, rgba(244, 208, 63, 0.22), transparent 34%, rgba(212, 175, 55, 0.12)),
+        transparent;
+      pointer-events: none;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      padding: 1px;
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .logo-stage {
+      position: relative;
+      width: min(290px, 72vw);
+      margin-inline: auto;
+      filter: drop-shadow(0 0 28px rgba(212, 175, 55, 0.36));
+    }
+
+    .wordmark {
+      margin-top: 14px;
+      text-align: center;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.2rem, 4.4vw, 3.55rem);
+      font-style: italic;
+      font-weight: 600;
+      color: var(--gold-light);
+      text-shadow:
+        0 0 18px rgba(212, 175, 55, 0.38),
+        0 0 42px rgba(212, 175, 55, 0.16);
+    }
+
+    .hero-card p {
+      margin-top: 4px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    .live-strip {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .live-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 13px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 15px;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.22);
+      font-size: 0.88rem;
+    }
+
+    .live-item strong {
+      color: var(--cream);
+      text-align: right;
+    }
+
+    .section {
+      padding: 112px 0;
+    }
+
+    .section-header {
+      max-width: 790px;
+      margin-bottom: 42px;
+    }
+
+    .section h2 {
+      margin-top: 14px;
+      font-size: clamp(2rem, 4.2vw, 3.55rem);
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .section-lead {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .problem {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0.035)),
+        radial-gradient(circle at 18% 20%, rgba(212, 175, 55, 0.08), transparent 30rem);
+    }
+
+    .problem-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .problem-statement,
+    .info-card,
+    .trust-panel,
+    .privacy-panel,
+    .pricing-card,
+    .quote-panel,
+    .contact-card,
+    .contact-form {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.022));
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+    }
+
+    .problem-statement {
+      padding: 34px;
+    }
+
+    .problem-statement .section-kicker {
+      margin-bottom: 18px;
+    }
+
+    .problem-statement p {
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .problem-statement strong {
+      color: var(--gold-light);
+    }
+
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .info-card {
+      position: relative;
+      padding: 26px;
+      overflow: hidden;
+      transition:
+        transform 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        background 0.2s var(--ease);
+    }
+
+    .info-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.7;
+    }
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-strong);
+      background:
+        linear-gradient(145deg, rgba(212, 175, 55, 0.08), rgba(255, 255, 255, 0.026));
+    }
+
+    .card-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 50%;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      font-family: "Cinzel", serif;
+      font-weight: 800;
+    }
+
+    .info-card h3,
+    .trust-panel h3,
+    .privacy-panel h3,
+    .pricing-card h3,
+    .contact-card h3 {
+      margin-bottom: 10px;
+      color: var(--cream);
+      font-size: 1.18rem;
+      line-height: 1.25;
+    }
+
+    .info-card p,
+    .trust-panel p,
+    .privacy-panel p,
+    .pricing-card p,
+    .contact-card p {
+      color: var(--muted);
+    }
+
+    .how {
+      background:
+        radial-gradient(circle at 82% 22%, rgba(212, 175, 55, 0.09), transparent 30rem),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.018));
+    }
+
+    .how-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.86fr) minmax(0, 1.14fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .trust-panel {
+      position: sticky;
+      top: calc(var(--nav-h) + 24px);
+      padding: 32px;
+    }
+
+    .trust-panel .eyebrow {
+      margin-bottom: 18px;
+    }
+
+    .signal-bars {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .signal {
+      display: grid;
+      gap: 7px;
+    }
+
+    .signal span:first-child {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .signal strong {
+      color: var(--gold-light);
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      width: var(--w);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-light));
+      box-shadow: 0 0 18px rgba(212, 175, 55, 0.34);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .timeline li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .step {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      color: #150f00;
+      background: linear-gradient(180deg, var(--gold-light), var(--gold));
+      box-shadow: 0 12px 30px rgba(212, 175, 55, 0.2);
+      font-family: "Cinzel", serif;
+      font-weight: 800;
+    }
+
+    .timeline h3 {
+      margin-bottom: 6px;
+      color: var(--cream);
+      font-size: 1.12rem;
+    }
+
+    .timeline p {
+      color: var(--muted);
+    }
+
+    .why {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0.035)),
+        radial-gradient(circle at 14% 18%, rgba(244, 208, 63, 0.08), transparent 28rem);
+    }
+
+    .why-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+      gap: 26px;
+      align-items: start;
+    }
+
+    .privacy-panel {
+      padding: 32px;
+    }
+
+    .privacy-panel .section-kicker {
+      margin-bottom: 18px;
+    }
+
+    .privacy-panel h3 {
+      font-size: 1.35rem;
+    }
+
+    .privacy-panel p {
+      margin-top: 14px;
+    }
+
+    .privacy-stack {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .privacy-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.18);
+      font-weight: 700;
+    }
+
+    .privacy-item strong {
+      color: var(--gold-light);
+    }
+
+    .benefit-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .benefit-item {
+      display: flex;
+      gap: 14px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.035);
+      transition:
+        transform 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        background 0.2s var(--ease);
+    }
+
+    .benefit-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-strong);
+      background: rgba(212, 175, 55, 0.055);
+    }
+
+    .check {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(97, 196, 138, 0.34);
+      border-radius: 50%;
+      color: var(--success);
+      background: rgba(97, 196, 138, 0.1);
+      font-weight: 900;
+    }
+
+    .benefit-item h3 {
+      margin-bottom: 4px;
+      color: var(--cream);
+      font-size: 1.05rem;
+    }
+
+    .benefit-item p {
+      color: var(--muted);
+    }
+
+    .pricing {
+      background:
+        radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.12), transparent 34rem),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.14), rgba(255, 255, 255, 0.018));
+    }
+
+    .pricing-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      position: relative;
+      padding: clamp(30px, 5vw, 46px);
+      overflow: hidden;
+    }
+
+    .pricing-card::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.13);
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .price-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-radius: 999px;
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.08);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .pricing-card h2 {
+      margin-bottom: 16px;
+    }
+
+    .price-points {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .price-point {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--muted);
+    }
+
+    .price-point::before {
+      content: "✓";
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .quote-panel {
+      padding: 32px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.14), transparent 42%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+    }
+
+    .quote-panel h3 {
+      font-family: "Cinzel", serif;
+      font-size: 1.55rem;
+      line-height: 1.15;
+      color: var(--cream);
+    }
+
+    .quote-panel p {
+      margin-top: 14px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      padding: 16px;
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--gold-light);
+      font-family: "Cinzel", serif;
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .contact {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(0, 0, 0, 0.22)),
+        radial-gradient(circle at 84% 24%, rgba(212, 175, 55, 0.08), transparent 30rem);
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .contact-card,
+    .contact-form {
+      padding: clamp(26px, 4vw, 36px);
+    }
+
+    .email-links {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .email-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 16px;
+      color: var(--cream);
+      background: rgba(0, 0, 0, 0.2);
+      font-weight: 800;
+      word-break: break-word;
+      transition:
+        transform 0.2s var(--ease),
+        border-color 0.2s var(--ease),
+        background 0.2s var(--ease);
+    }
+
+    .email-link span:last-child {
+      color: var(--gold-light);
+    }
+
+    .email-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(212, 175, 55, 0.06);
+    }
+
+    .contact-form {
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025));
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--cream);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      border-radius: 15px;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.3);
+      padding: 14px 15px;
+      outline: none;
+      transition:
+        border-color 0.2s var(--ease),
+        box-shadow 0.2s var(--ease),
+        background 0.2s var(--ease);
+    }
+
+    select {
+      color-scheme: dark;
+    }
+
+    textarea {
+      min-height: 132px;
+      resize: vertical;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(189, 188, 182, 0.62);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.13);
+      background: rgba(0, 0, 0, 0.38);
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .form-note {
+      margin-top: 12px;
+      color: var(--muted-dark);
+      font-size: 0.9rem;
+    }
+
+    .form-status {
+      min-height: 24px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .form-status.success {
+      color: var(--success);
+    }
+
+    .form-status.error {
+      color: var(--danger);
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--line);
+      background: rgba(0, 0, 0, 0.34);
+      padding: 30px 0;
+    }
+
+    .footer-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .footer-links a,
+    .footer-links button {
+      color: var(--muted);
+      font-weight: 800;
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+
+    .footer-links a:hover,
+    .footer-links button:hover {
+      color: var(--gold-light);
+    }
+
+    .modal {
+      width: min(540px, calc(100% - 32px));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.13), transparent 42%),
+        linear-gradient(145deg, rgba(24, 25, 25, 0.98), rgba(8, 9, 9, 0.98));
+      box-shadow: 0 34px 110px rgba(0, 0, 0, 0.68);
+      overflow: visible;
+    }
+
+    .modal::backdrop {
+      background: rgba(0, 0, 0, 0.74);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal[open] {
+      animation: modalIn 0.22s var(--ease);
+    }
+
+    .modal-card {
+      position: relative;
+      padding: 32px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 1.35rem;
+      line-height: 1;
+      transition:
+        background 0.2s var(--ease),
+        transform 0.2s var(--ease);
+    }
+
+    .modal-close:hover {
+      transform: rotate(8deg);
+      background: rgba(212, 175, 55, 0.1);
+    }
+
+    .modal h2 {
+      margin: 4px 44px 10px 0;
+      font-family: "Cinzel", serif;
+      font-size: 1.8rem;
+      line-height: 1.15;
+      color: var(--cream);
+    }
+
+    .modal p {
+      color: var(--muted);
+    }
+
+    .modal .form-grid {
+      margin-top: 18px;
+      grid-template-columns: 1fr;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 120;
+      max-width: min(420px, calc(100% - 40px));
+      padding: 14px 18px;
+      border: 1px solid rgba(97, 196, 138, 0.38);
+      border-radius: 18px;
+      color: var(--text);
+      background: rgba(8, 9, 9, 0.94);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      opacity: 0;
+      transform: translateY(18px);
+      pointer-events: none;
+      transition:
+        opacity 0.22s var(--ease),
+        transform 0.22s var(--ease);
+      font-weight: 800;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast[data-type="error"] {
+      border-color: rgba(255, 116, 116, 0.46);
+    }
+
+    @keyframes particleDrift {
+      from {
+        background-position: 0 0, 0 0, 0 0;
+      }
+      to {
+        background-position: 76px 76px, 76px 76px, 72px 72px;
+      }
+    }
+
+    @keyframes heroSparkle {
+      from {
+        background-position: 0 0, 0 0, 0 0;
+      }
+      to {
+        background-position: 68px 68px, 68px 68px, 102px 102px;
+      }
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (min-width: 960px) {
+      .benefit-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .problem-layout,
+      .how-layout,
+      .why-layout,
+      .pricing-wrap,
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        width: min(100%, 460px);
+      }
+
+      .trust-panel {
+        position: relative;
+        top: auto;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-wrap {
+        width: min(100% - 32px, 1240px);
+      }
+
+      .nav-links {
+        position: fixed;
+        top: calc(var(--nav-h) + 10px);
+        left: 16px;
+        right: 16px;
+        display: grid;
+        gap: 8px;
+        margin-left: 0;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: rgba(8, 9, 9, 0.96);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-12px);
+        transition:
+          opacity 0.22s var(--ease),
+          transform 0.22s var(--ease);
+      }
+
+      .nav-links.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .nav-link {
+        width: 100%;
+        justify-content: flex-start;
+        padding-inline: 14px;
+      }
+
+      .nav-link.login-link {
+        margin-left: 0;
+      }
+
+      .menu-toggle {
+        display: inline-grid;
+      }
+
+      .hero-bg-art {
+        right: 50%;
+        width: min(112vw, 820px);
+        transform: translateX(50%) translateY(-48%) scale(0.92);
+        opacity: 0.12;
+      }
+    }
+
+    @media (max-width: 720px) {
+      :root {
+        --nav-h: 70px;
+      }
+
+      .container {
+        width: min(100% - 32px, 1160px);
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 43px;
+      }
+
+      .brand-text {
+        font-size: 1rem;
+      }
+
+      .hero {
+        padding-top: calc(var(--nav-h) + 54px);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.35rem, 12.8vw, 4.15rem);
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .section {
+        padding: 78px 0;
+      }
+
+      .problem-cards,
+      .metric-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .problem-statement,
+      .trust-panel,
+      .privacy-panel,
+      .pricing-card,
+      .quote-panel,
+      .contact-card,
+      .contact-form {
+        border-radius: 22px;
+      }
+
+      .timeline li {
+        grid-template-columns: 1fr;
+      }
+
+      .email-link {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-wrap {
+        display: grid;
+      }
+
+      .toast {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="safeGold" x1="18" y1="0" x2="122" y2="170" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff1a3" />
+        <stop offset="0.26" stop-color="#f4d03f" />
+        <stop offset="0.58" stop-color="#d4af37" />
+        <stop offset="1" stop-color="#8d6818" />
+      </linearGradient>
+      <linearGradient id="safeSteel" x1="38" y1="38" x2="104" y2="126" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#68727d" />
+        <stop offset="0.42" stop-color="#252c33" />
+        <stop offset="1" stop-color="#11161a" />
+      </linearGradient>
+      <linearGradient id="safeEdge" x1="18" y1="8" x2="122" y2="162" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#fff2ad" />
+        <stop offset="0.42" stop-color="#d4af37" />
+        <stop offset="1" stop-color="#7d5816" />
+      </linearGradient>
+      <filter id="logoGlow" x="-35%" y="-35%" width="170%" height="170%">
+        <feGaussianBlur stdDeviation="4.5" result="blur" />
+        <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.86 0 1 0 0 0.56 0 0 1 0 0.08 0 0 0 0.9 0" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+    <symbol id="safe-frame-logo" viewBox="0 0 140 170">
+      <g filter="url(#logoGlow)">
+        <path d="M70 7L122 25.5V66.5C122 112.3 101.6 147.4 70 163C38.4 147.4 18 112.3 18 66.5V25.5L70 7Z" fill="url(#safeGold)" stroke="url(#safeEdge)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M70 19.5L111 33.8V65.6C111 103.2 95.2 132.8 70 147.2C44.8 132.8 29 103.2 29 65.6V33.8L70 19.5Z" fill="#11161a" stroke="#ffffff" stroke-opacity="0.16" stroke-width="2" />
+        <path d="M70 31L96 40.5V64.2C96 91.4 85.5 113.4 70 124.4C54.5 113.4 44 91.4 44 64.2V40.5L70 31Z" fill="url(#safeSteel)" stroke="#d4af37" stroke-width="2" />
+        <path d="M58 47H82V57H69V63H86V74H69V82H80V93H58V82H72V74H54V63H72V57H58Z" fill="url(#safeGold)" opacity="0.96" />
+        <path d="M70 31V124" stroke="#d4af37" stroke-width="2" opacity="0.62" />
+        <path d="M43 65.5C55 75.4 64.8 80.4 70 80.4C75.2 80.4 85 75.4 97 65.5" fill="none" stroke="#f4d03f" stroke-width="2" opacity="0.62" />
+        <g transform="translate(48 12)">
+          <path d="M70 0C77.7 0 84 6.3 84 14V42H56V14C56 6.3 62.3 0 70 0Z" fill="url(#safeGold)" />
+          <path d="M56 42H84V49C84 53.4 80.4 57 76 57H64C59.6 57 56 53.4 56 49V42Z" fill="#b88719" />
+          <path d="M70 57V64" stroke="#f4d03f" stroke-width="4" stroke-linecap="round" />
+          <circle cx="70" cy="67" r="3" fill="#f4d03f" />
+          <path d="M61 18H79" stroke="#fff1a7" stroke-width="3" stroke-linecap="round" opacity="0.72" />
+        </g>
+        <path d="M30 122H110L103 140C88 147 52 147 37 140L30 122Z" fill="url(#safeGold)" />
+        <path d="M30 122L22 132M110 122L118 132" fill="#b88719" />
+        <text x="70" y="137" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8.5" font-weight="800" letter-spacing="1.1" fill="#150f00">SCHOOL SECURITY</text>
+        <path d="M31 29L53 37M109 29L87 37" stroke="#fff1a7" stroke-width="2" opacity="0.34" />
+      </g>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav" id="site-header">
+    <nav class="nav-wrap" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="SafeFrame home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 140 170" focusable="false">
+            <use href="#safe-frame-logo"></use>
+          </svg>
+        </span>
+        <span class="brand-text">SafeFrame</span>
+      </a>
+
+      <div class="nav-links" id="primary-menu">
+        <a class="nav-link active" href="#home">Home</a>
+        <a class="nav-link" href="#problem">Problem</a>
+        <a class="nav-link" href="#how">How It Works</a>
+        <a class="nav-link" href="#why">Features</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
+        <a class="nav-link" href="#contact">Contact</a>
+        <button class="nav-link login-link" type="button" data-open-modal="login-modal">Login</button>
+      </div>
+
+      <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primary-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <svg class="hero-bg-art" viewBox="0 0 140 170" aria-hidden="true" focusable="false">
+        <use href="#safe-frame-logo"></use>
+      </svg>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">Advanced Campus Protection</div>
+          <h1 id="hero-title">SafeFrame — Smarter Security From the Cameras You Already Have</h1>
+          <p class="hero-subheadline">AI-powered behavior detection that helps facilities respond faster to danger, without new hardware or facial recognition.</p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#contact" data-open-contact>Get Started</a>
+            <a class="btn btn-secondary" href="#how">See How It Works</a>
+          </div>
+
+          <div class="hero-proof" aria-label="SafeFrame principles">
+            <span class="proof-pill">No new hardware</span>
+            <span class="proof-pill">No facial recognition</span>
+            <span class="proof-pill">Human-verified alerts</span>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="SafeFrame school security emblem">
+          <div class="logo-stage" aria-hidden="true">
+            <svg class="logo-svg" viewBox="0 0 140 170" focusable="false">
+              <use href="#safe-frame-logo"></use>
+            </svg>
+          </div>
+          <div class="wordmark">SafeFrame</div>
+          <p>Advanced Campus Protection</p>
+
+          <div class="live-strip" aria-label="Deployment highlights">
+            <div class="live-item"><span>Hardware</span><strong>Existing cameras</strong></div>
+            <div class="live-item"><span>Identity</span><strong>No facial data</strong></div>
+            <div class="live-item"><span>Verification</span><strong>Human reviewed</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section problem" id="problem" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="problem-layout">
+          <div class="problem-statement">
+            <div class="section-kicker">THE PROBLEM</div>
+            <h2 id="problem-title">Most schools and facilities already have security cameras — but footage is only reviewed after something happens. SafeFrame changes that.</h2>
+            <p>Security teams need faster situational awareness without replacing trusted camera systems or adding invasive identity tracking.</p>
+          </div>
+
+          <div class="problem-cards">
+            <article class="info-card">
+              <span class="card-number">01</span>
+              <h3>Reactive review</h3>
+              <p>Footage is often checked after an incident, leaving teams without real-time context when it matters most.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">02</span>
+              <h3>Missed context</h3>
+              <p>Live camera feeds can be difficult to monitor continuously, especially across large campuses and facilities.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">03</span>
+              <h3>Costly hardware cycles</h3>
+              <p>New sensor networks can be expensive, disruptive, and slow to deploy when the cameras are already in place.</p>
+            </article>
+
+            <article class="info-card">
+              <span class="card-number">04</span>
+              <h3>False alarm fatigue</h3>
+              <p>Alerts need human judgment so teams can act quickly without triggering unnecessary responses.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section how" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">HOW IT WORKS</div>
+          <h2 id="how-title">Detection You Can Trust</h2>
+        </div>
+
+        <div class="how-layout">
+          <aside class="trust-panel">
+            <div class="eyebrow">Real-time, privacy-first</div>
+            <h3>Behavior detection, not identity tracking.</h3>
+            <p>SafeFrame analyzes movement and activity patterns to surface potentially dangerous situations, then routes alerts to trained reviewers before action is taken.</p>
+
+            <div class="signal-bars" aria-label="SafeFrame verification signals">
+              <div class="signal">
+                <span><span>Camera compatibility</span><strong>High</strong></span>
+                <div class="bar"><i style="--w: 94%"></i></div>
+              </div>
+              <div class="signal">
+                <span><span>Facial data stored</span><strong>None</strong></span>
+                <div class="bar"><i style="--w: 0%"></i></div>
+              </div>
+              <div class="signal">
+                <span><span>Human verification</span><strong>Required</strong></span>
+                <div class="bar"><i style="--w: 100%"></i></div>
+              </div>
+            </div>
+          </aside>
+
+          <ol class="timeline">
+            <li>
+              <span class="step">1</span>
+              <div>
+                <h3>Connect existing cameras</h3>
+                <p>Use the camera network your facility already has, helping avoid costly hardware replacement and long deployment timelines.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">2</span>
+              <div>
+                <h3>Analyze movement and activity</h3>
+                <p>SafeFrame's AI analyzes behavior across your existing camera network to flag potentially dangerous situations in real time.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">3</span>
+              <div>
+                <h3>Protect privacy by design</h3>
+                <p>The system is built without identifying individuals or storing facial data, keeping the focus on safety context instead of identity profiles.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step">4</span>
+              <div>
+                <h3>Verify before action</h3>
+                <p>Every alert is reviewed by a trained person before any action is taken, reducing false alarms and unnecessary responses.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why" id="why" aria-labelledby="why-title">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">WHY SAFEFRAME</div>
+          <h2 id="why-title">Built for faster awareness without compromising privacy.</h2>
+          <p class="section-lead">SafeFrame helps schools, campuses, and facilities turn existing camera coverage into actionable situational awareness.</p>
+        </div>
+
+        <div class="why-layout">
+          <aside class="privacy-panel">
+            <div class="section-kicker">Privacy-first</div>
+            <h3>Designed to support safety teams without facial recognition or biometric storage.</h3>
+            <p>SafeFrame focuses on behavior signals and verified alerts, giving facilities a practical path to smarter protection while respecting student, staff, and visitor privacy.</p>
+
+            <div class="privacy-stack">
+              <div class="privacy-item"><span>Facial recognition</span><strong>Not used</strong></div>
+              <div class="privacy-item"><span>Biometric storage</span><strong>None</strong></div>
+              <div class="privacy-item"><span>Alert decisioning</span><strong>Human verified</strong></div>
+            </div>
+          </aside>
+
+          <div class="benefit-list">
+            <article class="benefit-item">
+              <span class="check" aria-hidden="true">✓</span>
+              <div>
+                <h3>Works with your existing cameras — no costly new hardware</h3>
+                <p>Keep your current camera footprint and reduce the disruption of a traditional security upgrade.</p>
+              </div>
+            </article>
+
+            <article class="benefit-item">
+              <span class="check" aria-hidden="true">✓</span>
+              <div>
+                <h3>Privacy-first — no facial recognition, no biometric storage</h3>
+                <p>SafeFrame is designed around behavior detection and privacy-preserving deployment.</p>
+              </div>
+            </article>
+
+            <article class="benefit-item">
+              <span class="check" aria-hidden="true">✓</span>
+              <div>
+                <h3>Human-verified — every alert is confirmed by a person, not decided by AI alone</h3>
+                <p>Trained reviewers help reduce unnecessary responses and provide context before escalation.</p>
+              </div>
+            </article>
+
+            <article class="benefit-item">
+              <span class="check" aria-hidden="true">✓</span>
+              <div>
+                <h3>Built for schools, campuses, and facilities that need faster situational awareness</h3>
+                <p>From K-12 campuses to large facilities, SafeFrame helps teams see potential danger sooner.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-kicker">PRICING</div>
+          <h2 id="pricing-title">Custom pricing based on your facility size and camera count.</h2>
+        </div>
+
+        <div class="pricing-wrap">
+          <article class="pricing-card">
+            <span class="price-badge">Custom Deployment</span>
+            <h2>Request a Quote →</h2>
+            <p class="section-lead">We tailor pricing around your facility footprint, camera count, review workflow, and deployment needs.</p>
+
+            <div class="price-points">
+              <div class="price-point">Scope based on existing camera coverage and facility size.</div>
+              <div class="price-point">Designed to avoid publishing proprietary detection methods.</div>
+              <div class="price-point">Privacy-first planning for schools, campuses, and facilities.</div>
+            </div>
+
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" data-open-contact>Request a Quote</button>
+              <a class="btn btn-secondary" href="mailto:safeframe@kbradysolutions.com">Email SafeFrame</a>
+            </div>
+          </article>
+
+          <aside class="quote-panel">
+            <h3>Quote built around your environment.</h3>
+            <p>Custom pricing keeps the site compelling and legitimate while allowing SafeFrame to provide a tailored plan without exposing proprietary methods.</p>
+
+            <div class="metric-grid" aria-label="Pricing factors">
+              <div class="metric"><strong>0</strong><span>new camera hardware required</span></div>
+              <div class="metric"><strong>1</strong><span>trained human review before action</span></div>
+              <div class="metric"><strong>0</strong><span>facial data stored</span></div>
+              <div class="metric"><strong>24/7</strong><span>situational awareness support</span></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact-layout">
+          <aside class="contact-card">
+            <div class="section-kicker">CONTACT</div>
+            <h2 id="contact-title">Talk with SafeFrame.</h2>
+            <p>Request a quote, ask about privacy-first deployment, or discuss how SafeFrame can work with your existing cameras.</p>
+
+            <div class="email-links" aria-label="SafeFrame contact emails">
+              <a class="email-link" href="mailto:karl@kbradysolutions.com">
+                <span>karl@kbradysolutions.com</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a class="email-link" href="mailto:safeframe@kbradysolutions.com">
+                <span>safeframe@kbradysolutions.com</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </aside>
+
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" required />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+              </div>
+
+              <div class="field">
+                <label for="organization">Organization</label>
+                <input id="organization" name="organization" type="text" autocomplete="organization" placeholder="School, campus, or facility" />
+              </div>
+
+              <div class="field">
+                <label for="facility">Facility type</label>
+                <select id="facility" name="facility">
+                  <option value="">Select one</option>
+                  <option>K-12 school</option>
+                  <option>College or university</option>
+                  <option>Corporate campus</option>
+                  <option>Healthcare or public facility</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="camera-count">Camera count</label>
+                <select id="camera-count" name="camera-count">
+                  <option value="">Select range</option>
+                  <option>1–25 cameras</option>
+                  <option>26–100 cameras</option>
+                  <option>101–500 cameras</option>
+                  <option>500+ cameras</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="topic">Topic</label>
+                <select id="topic" name="topic" required>
+                  <option value="">Select a topic</option>
+                  <option value="quote">Request a Quote</option>
+                  <option value="deployment">Existing camera deployment</option>
+                  <option value="privacy">Privacy-first review</option>
+                  <option value="partnership">Partnership question</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell us about your facility, camera count, and timeline." required></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit">Send Message</button>
+              <p class="form-note">SafeFrame does not use facial recognition or biometric storage.</p>
+            </div>
+
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-wrap">
+      <p>© <span id="year"></span> SafeFrame by K Brady Solutions. Privacy-first campus protection.</p>
+      <div class="footer-links" aria-label="Footer navigation">
+        <a href="#home">Home</a>
+        <a href="#contact">Contact</a>
+        <button type="button" data-open-modal="login-modal">Login</button>
+      </div>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="login-modal" aria-labelledby="login-title">
+    <form class="modal-card" id="login-form" novalidate>
+      <button class="modal-close" type="button" data-close-modal aria-label="Close login dialog">×</button>
+      <h2 id="login-title">SafeFrame Login</h2>
+      <p>Sign in to access your SafeFrame dashboard preview.</p>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter password" minlength="6" required />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Sign In</button>
+        <p class="form-note">Use a valid email and a password of at least 6 characters.</p>
+      </div>
+
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const header = document.getElementById("site-header");
+      const menuToggle = document.querySelector(".menu-toggle");
+      const navLinksWrap = document.getElementById("primary-menu");
+      const toast = document.getElementById("toast");
+      let toastTimer;
+
+      const updateHeader = () => {
+        header.classList.toggle("scrolled", window.scrollY > 8);
+      };
+
+      updateHeader();
+      window.addEventListener("scroll", updateHeader, { passive: true });
+
+      const closeMenu = () => {
+        if (!navLinksWrap || !menuToggle) return;
+        navLinksWrap.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "Open menu");
+      };
+
+      if (menuToggle && navLinksWrap) {
+        menuToggle.addEventListener("click", () => {
+          const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+          menuToggle.setAttribute("aria-expanded", String(!isOpen));
+          menuToggle.setAttribute("aria-label", isOpen ? "Open menu" : "Close menu");
+          navLinksWrap.classList.toggle("open", !isOpen);
+        });
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      const navSectionLinks = Array.from(document.querySelectorAll('.nav-link[href^="#"]'));
+      const sections = Array.from(document.querySelectorAll("main section[id]"));
+
+      if ("IntersectionObserver" in window) {
+        const navObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              const id = entry.target.getAttribute("id");
+              navSectionLinks.forEach((link) => {
+                link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+              });
+            });
+          },
+          {
+            rootMargin: "-42% 0px -50% 0px",
+            threshold: 0.01
+          }
+        );
+
+        sections.forEach((section) => navObserver.observe(section));
+      }
+
+      const modals = new Map(Array.from(document.querySelectorAll("dialog")).map((dialog) => [dialog.id, dialog]));
+
+      const closeModal = (dialog) => {
+        if (!dialog) return;
+        if (typeof dialog.close === "function" && dialog.open) {
+          dialog.close();
+        } else {
+          dialog.removeAttribute("open");
+          document.body.classList.remove("modal-open");
+        }
+      };
+
+      document.querySelectorAll("dialog").forEach((dialog) => {
+        dialog.addEventListener("close", () => document.body.classList.remove("modal-open"));
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) closeModal(dialog);
+        });
+      });
+
+      document.querySelectorAll("[data-open-modal]").forEach((button) => {
+        button.addEventListener("click", () => {
+          closeMenu();
+          const modal = modals.get(button.getAttribute("data-open-modal"));
+          if (!modal) return;
+
+          if (!modal.open) {
+            if (typeof modal.showModal === "function") {
+              modal.showModal();
+            } else {
+              modal.setAttribute("open", "");
+            }
+          }
+
+          document.body.classList.add("modal-open");
+          const firstFocusable = modal.querySelector("input, select, textarea, button, a[href]");
+          if (firstFocusable) {
+            setTimeout(() => firstFocusable.focus(), 40);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-close-modal]").forEach((button) => {
+        button.addEventListener("click", () => closeModal(button.closest("dialog")));
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      const contactForm = document.getElementById("contact-form");
+      const loginForm = document.getElementById("login-form");
+
+      const showToast = (message, type = "success") => {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.dataset.type = type;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3600);
+      };
+
+      const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      const setFormStatus = (form, message, type) => {
+        const status = form.querySelector(".form-status");
+        if (!status) return;
+        status.textContent = message;
+        status.className = `form-status ${type}`;
+      };
+
+      const scrollToContact = (event) => {
+        if (event) event.preventDefault();
+        closeMenu();
+
+        const contact = document.getElementById("contact");
+        if (!contact) return;
+
+        contact.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+          block: "start"
+        });
+
+        setTimeout(() => {
+          const firstField = contactForm?.querySelector("input, select, textarea, button");
+          firstField?.focus({ preventScroll: true });
+        }, prefersReducedMotion ? 60 : 650);
+      };
+
+      document.querySelectorAll("[data-open-contact]").forEach((control) => {
+        control.addEventListener("click", scrollToContact);
+      });
+
+      if (contactForm) {
+        contactForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(contactForm);
+          const name = String(formData.get("name") || "").trim();
+          const email = String(formData.get("email") || "").trim();
+          const topic = String(formData.get("topic") || "").trim();
+          const message = String(formData.get("message") || "").trim();
+
+          if (!name || !email || !topic || !message) {
+            setFormStatus(contactForm, "Please complete your name, email, topic, and message.", "error");
+            showToast("Please complete the required fields.", "error");
+            return;
+          }
+
+          if (!isValidEmail(email)) {
+            setFormStatus(contactForm, "Please enter a valid email address.", "error");
+            showToast("Please enter a valid email address.", "error");
+            return;
+          }
+
+          setFormStatus(contactForm, "Thanks — your message has been submitted. SafeFrame will follow up shortly.", "success");
+          showToast("Thanks — SafeFrame will follow up shortly.");
+          contactForm.reset();
+        });
+      }
+
+      if (loginForm) {
+        loginForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(loginForm);
+          const email = String(formData.get("email") || "").trim();
+          const password = String(formData.get("password") || "");
+
+          if (!email || !isValidEmail(email)) {
+            setFormStatus(loginForm, "Please enter a valid email address.", "error");
+            showToast("Please enter a valid email address.", "error");
+            return;
+          }
+
+          if (!password || password.length < 6) {
+            setFormStatus(loginForm, "Password must be at least 6 characters.", "error");
+            showToast("Password must be at least 6 characters.", "error");
+            return;
+          }
+
+          setFormStatus(loginForm, "Signed in successfully. Welcome back.", "success");
+          showToast("Signed in successfully.");
+          setTimeout(() => closeModal(loginForm.closest("dialog")), 1200);
+        });
+      }
+
+      const year = document.getElementById("year");
+      if (year) year.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
